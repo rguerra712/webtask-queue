@@ -1,0 +1,4 @@
+!#/bin/sh
+clear
+
+wt create queue-api.js --meta wt-compiler=webtask-tools/express
