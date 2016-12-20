@@ -9,6 +9,10 @@ case $key in
     SECRET="$2"
     shift # past argument
     ;;
+    -q|--queue)
+    QUEUE="$2"
+    shift # past argument
+    ;;
 esac
 done
 
@@ -16,8 +20,12 @@ if [ -z "$SECRET" ] ; then
 	echo "-s --secret argument required!"
 	exit
 fi
+if [ -z "$QUEUE" ] ; then
+	echo "Queue name is 'queue'"
+	QUEUE="queue"
+fi
 
 >queue.js
-sed 's/<SECRET>/$SECRET/g' queue-api.js > queue.js
-wt create queue.js --meta wt-compiler=webtask-tools/express
-rm queue.js
+sed 's/<SECRET>/$SECRET/g' queue-api.js > $QUEUE.js
+wt create $QUEUE.js --meta wt-compiler=webtask-tools/express
+rm $QUEUE.js
