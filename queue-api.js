@@ -1,7 +1,7 @@
 var app = new (require('express'))();
 var bodyParser = require('body-parser');
 var url = require('url');
-var secret = '<SECRET>';
+var secret;
 
 app.use(bodyParser.json());
 
@@ -33,8 +33,8 @@ function getQueryStringValue(request, key){
 
 function validateSecret(request, response){
     var context = getContext(request);
-    var token = getQueryStringValue(request, 'token');
-    if (token === secret){
+    var secretQuery = getQueryStringValue(request, 'secret');
+    if (secret === secretQuery){
         return true;
     }
     response.status(401).send('Unauthorized');

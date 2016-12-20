@@ -1,4 +1,23 @@
-!#/bin/sh
-clear
+#!/bin/bash
 
-wt create queue-api.js --meta wt-compiler=webtask-tools/express
+while [[ $# -gt 1 ]]
+do
+key="$1"
+
+case $key in
+    -s|--secret)
+    SECRET="$2"
+    shift # past argument
+    ;;
+esac
+done
+
+if [ -z "$SECRET" ] ; then
+	echo "-s --secret argument required!"
+	exit
+fi
+
+>queue.js
+sed 's/<SECRET>/$SECRET/g' queue-api.js > queue.js
+wt create queue.js --meta wt-compiler=webtask-tools/express
+rm queue.js
